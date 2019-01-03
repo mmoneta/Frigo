@@ -1,24 +1,24 @@
 * {
-	margin: 0;
-	padding: 0;
-	cursor: pointer;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
 }
 
 body, html {
   width: 100vw;
-	height: 100vh;  
-	overflow: hidden;
-	background-color: black;
-	-webkit-user-select: none;
-	-moz-user-select: -moz-none;
-	-ms-user-select: none;
-	user-select: none;
+  height: 100vh;  
+  overflow: hidden;
+  background-color: black;
+  -webkit-user-select: none;
+  -moz-user-select: -moz-none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .sign-in {  
   &--view {
     width: 100vw;
-	  height: 100vh;  			
+    height: 100vh;  			
     display: flex;
     align-items: center;
     justify-content: center;
@@ -29,8 +29,8 @@ body, html {
   }
 
   &--content {
-		display: flex;
-		flex-direction: column;
+    display: flex;
+    flex-direction: column;
     text-align: center;
   }
 
@@ -45,7 +45,7 @@ body, html {
 
   &--alert {
     margin-top: 3vh;
-	  font-size: 18px;
+    font-size: 18px;
   }
 }
 
@@ -87,28 +87,28 @@ button[type=submit] {
 
   &--add {
     max-width: 50px; 
-	  position: absolute; 
+    position: absolute; 
     right: 5%; 
     top: 5%;
   }
 }
 
 .note {
-	position: absolute;
-	min-width: 150px; 
-	min-height: 150px; 
-	border: 2px solid black; 
-	background: orange; 
-	font-family: Georgia;
-	font-size: 17px;
-	text-align: center;
-	padding-top: 5px;
+  position: absolute;
+  min-width: 150px; 
+  min-height: 150px; 
+  border: 2px solid black; 
+  background: orange; 
+  font-family: Georgia;
+  font-size: 17px;
+  text-align: center;
+  padding-top: 5px;
 } 
 
 .editor {
-	box-sizing: border-box;
-	width: 100%;
-	height: calc(100% - 50px);
-	background-color: greenyellow;
-	resize: none;
+  box-sizing: border-box;
+  width: 100%;
+  height: calc(100% - 50px);
+  background-color: greenyellow;
+  resize: none;
 }
