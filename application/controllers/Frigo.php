@@ -3,22 +3,29 @@
     function __construct() {
       parent::__construct();
       $this->load->helper('url');
-      $this->load->library('user_agent');
+      // $this->load->model('Frigo_Model');
     }
 
     public function index() {
       $this->load->view('index');
     }
 
-    public function users($nick) {
-      //$query = $this->db->query('SELECT * FROM `Frigo` WHERE Author = "'.$nick.'"');
-      //echo json_encode($query->result(), JSON_PRETTY_PRINT);
-      echo('ss');
+    public function users($creator) {
+      $query = $this->db->query('SELECT * FROM `cards` WHERE Creator = "'.$creator.'"');
+      echo json_encode($query->result(), JSON_PRETTY_PRINT);
     }
     
-    public function add($nick, $identity, $width, $height, $top, $left, $index) {
+    public function add() {
+      $creator = $this->input->post('creator');
+      $identity = $this->input->post('identity');
+      $width = $this->input->post('width');
+      $height = $this->input->post('height');
+      $top = $this->input->post('top');
+      $left = $this->input->post('left');
+      $index = $this->input->post('index');
+
       $data = array(
-        'Author' => $nick,
+        'Creator' => $creator,
         'Identity' => $identity,
         'Width' => $width,
         'Height' => $height,
@@ -26,48 +33,65 @@
         'Left' => $left,
         'Index' => $index
       );
-      $this->db->insert('Frigo', $data);
+
+      $this->db->insert('cards', $data);
     }
     
-    public function size($nick, $identity, $width, $height) {
+    public function size() {
+      $creator = $this->input->post('creator');
+      $identity = $this->input->post('identity');
+      $width = $this->input->post('width');
+      $height = $this->input->post('height');
+
       $data = array( 
         'Width' => $width, 
         'Height' => $height 
-      ); 
+      );
+
       $this->db->set($data); 
-      $this->db->where('Author', $nick);
+      $this->db->where('Creator', $creator);
       $this->db->where('Identity', $identity);
-      $this->db->update('Frigo', $data);
+      $this->db->update('cards', $data);
     }
     
-    public function position($nick, $identity, $top, $left) {
+    public function position() {
+      $creator = $this->input->post('creator');
+      $identity = $this->input->post('identity');
+      $top = $this->input->post('top');
+      $left = $this->input->post('left');
+
       $data = array( 
         'Top' => $top, 
         'Left' => $left 
       ); 
+
       $this->db->set($data); 
-      $this->db->where('Author', $nick);
+      $this->db->where('Creator', $creator);
       $this->db->where('Identity', $identity);
-      $this->db->update('Frigo', $data);
+      $this->db->update('cards', $data);
     }
     
     public function content() {
-      $nick = $this->input->post('nick');
+      $creator = $this->input->post('creator');
       $identity = $this->input->post('identity');
       $content = $this->input->post('content');
+
       $data = array( 
         'Content' => $content
-      ); 
+      );
+
       $this->db->set($data); 
-      $this->db->where('Author', $nick);
+      $this->db->where('Creator', $creator);
       $this->db->where('Identity', $identity);
-      $this->db->update('Frigo', $data);
+      $this->db->update('cards', $data);
     }
     
-    public function delete($nick, $identity) {
-      $this->db->where('Author', $nick);
+    public function delete() {
+      $creator = $this->input->post('creator');
+      $identity = $this->input->post('identity');
+
       $this->db->where('Identity', $identity);
-      $this->db->delete('Frigo');
+      $this->db->delete('cards');
     }
   }
 ?>

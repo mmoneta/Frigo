@@ -1,21 +1,25 @@
 const gulp = require('gulp'),
+connect = require('gulp-connect-php'),
+browserSync = require('browser-sync'),
 sass = require('gulp-sass'),
 imagemin = require('gulp-imagemin'),
-browserSync = require('browser-sync'),
-babel = require('gulp-babel'),
-uglify = require('gulp-uglify');
+browserify = require('browserify'),
+babelify = require('babelify'),
+source = require('vinyl-source-stream'),
+buffer = require('vinyl-buffer');
 
 // Development Tasks 
 // -----------------
 
-// Start browserSync server
-gulp.task('browserSync', function() {
-  browserSync({
-    server: {
-      baseDir: 'assets'
-    }
-  })
-})
+gulp.task('connect-sync', function() {
+  connect.server({}, function () {
+    browserSync({ proxy: '127.0.0.1:8000' });
+  });
+
+  gulp.watch('application/views/**/*.php').on('change', function() {
+    browserSync.reload();
+  });
+});
 
 gulp.task('sass', function() {
   return gulp.src('assets/styles/scss/**/*.scss') // Gets all files ending with .scss in app/scss and children dirs
@@ -25,16 +29,18 @@ gulp.task('sass', function() {
     .pipe(browserSync.reload({ // Reloading with Browser Sync
       stream: true
     }));
-})
+});
 
-gulp.task('transpile', function() {
-  return gulp.src('assets/scripts/src/**/*.js')
-    .pipe(babel({
+gulp.task('browserify', function() {
+  return browserify({ entries: './assets/scripts/src/index.js', extensions: ['.js'], debug: true })
+    .transform(babelify.configure({
       presets: ['@babel/env']
     }))
-    .pipe(uglify())
-    .pipe(gulp.dest('assets/scripts/dist'))
-})
+    .bundle()
+    .pipe(source('index.js'))
+    .pipe(gulp.dest('assets/scripts/dist/'))
+    .pipe(buffer())
+});
 
 gulp.task('minify', function() {
   gulp.src('assets/images/src/*')
@@ -43,10 +49,7 @@ gulp.task('minify', function() {
 });
 
 // Watchers
-gulp.task('watch', ['browserSync', 'sass', 'transpile'], function() {
+gulp.task('watch', ['connect-sync', 'sass', 'browserify'], function() {
   gulp.watch('assets/styles/scss/**/*.scss', ['sass']);
-  gulp.watch('assets/scripts/src/**/*.js', ['transpile']);
-  gulp.watch('assets/styles/scss/**/*.scss', browserSync.reload); 
-  gulp.watch('assets/scripts/src/**/*.js', browserSync.reload);
-  gulp.watch('application/views/*.html', browserSync.reload); 
+  gulp.watch('assets/scripts/src/**/*.js', ['browserify']); 
 })
