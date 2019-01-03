@@ -37,6 +37,7 @@ export class Card {
 
     // Delete card (button)
     this.destroyButton = document.createElement('div');
+    this.destroyButton.className = 'destroy--button';
     this.card.appendChild(this.destroyButton);
     this.destroyButton.style.cssText = 'width: 15px; height: 15px; position: absolute; border-radius: 3px; top: -14px; right: -14px; background-color: blue;';
 
@@ -45,7 +46,7 @@ export class Card {
       var xhttp = new XMLHttpRequest();
       xhttp.open('POST', 'Frigo/delete', true);
       xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-      xhttp.send(`creator=${this.cretor}&identity=${this.card.id}`);
+      xhttp.send(`creator=${this.cretor}&identity=${this.ID}`);
     });
  
     // Moving
@@ -73,6 +74,7 @@ export class Card {
  
     // Zooming
     this.resize = document.createElement('div');
+    this.resize.className = 'resize--button';
     this.card.appendChild(this.resize);
     this.resize.style.cssText = 'width: 15px; height: 15px; background-color: green; position: absolute; border-radius: 3px; right: -14px; bottom: -14px';  
   
@@ -152,12 +154,18 @@ export class Card {
     });
 
     // Swapping layers
-    this.card.addEventListener('click', () => {
-      var notes = document.querySelectorAll('.note');
-      for (let i = 1; i <= notes.length; i++) {
-        document.getElementById(i).style.zIndex = i;
+    this.card.addEventListener('click', (e) => {
+      const classes_of_buttons = ['resize--button', 'destroy--button'];
+
+      if (classes_of_buttons.indexOf(e.target.className) !== -1) {
+        const notes = document.querySelectorAll('.note');
+        
+        for (let i = 1; i <= notes.length; i++) {
+          document.getElementById(i).style.zIndex = i;
+        };
+        
+        document.getElementById(this.card.id).style.zIndex = notes.length + 1;
       };
-      document.getElementById(this.card.id).style.zIndex = notes.length + 1;
     });
   };
 };
