@@ -157,7 +157,7 @@ export class Card {
     this.card.addEventListener('click', (e) => {
       const classes_of_buttons = ['resize--button', 'destroy--button'];
 
-      if (classes_of_buttons.indexOf(e.target.className) !== -1) {
+      if (classes_of_buttons.indexOf(e.target.className) === -1) {
         const notes = document.querySelectorAll('.note');
         
         for (let i = 1; i <= notes.length; i++) {
