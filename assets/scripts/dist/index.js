@@ -323,7 +323,7 @@ function () {
       this.card.addEventListener('click', function (e) {
         var classes_of_buttons = ['resize--button', 'destroy--button'];
 
-        if (classes_of_buttons.indexOf(e.target.className) != -1) {
+        if (classes_of_buttons.indexOf(e.target.className) == -1) {
           var notes = document.querySelectorAll('.note');
 
           for (var i = 1; i <= notes.length; i++) {
